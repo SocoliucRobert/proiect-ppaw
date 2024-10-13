@@ -77,7 +77,7 @@ const Contact = () => {
     }
 
     const { data, error } = await supabase
-      .from('contactform')
+      .from('contact')
       .insert([
         {
           first_name: sanitizedFormData.first_name,
