@@ -1,0 +1,111 @@
+.topBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  padding: 0 20px; 
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 50px;
+}
+
+.brand {
+  color: black;
+  font-size: 24px;
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+.loginButton {
+  display: flex;
+  align-items: center;
+  margin-right: 50px;
+  margin-top:10px;
+
+}
+
+.buttonStyle {
+  padding: 10px 20px;
+  font-size: 22px;
+  background-color: #6D93C0; 
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  text-transform: uppercase; 
+  text-decoration: none;
+  font-weight: bold;
+  transition: transform 0.10s ease-in-out; 
+}
+
+.buttonStyle:hover {
+  background-color: #004494;
+}
+.buttonStyle:active {
+  transform: translateY(-10px); 
+}
+
+.buttonText {
+  color: white; 
+}
+
+.header {
+  position: relative;
+  width: 100%;
+  margin-top: 10px; 
+}
+
+.image {
+  width: 100%;
+  height: auto;
+}
+
+.wordsContainer {
+  position: absolute;
+  bottom: 15%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.word {
+  font-size: calc(1vw + 1vh + 0.5vmin);
+  color: white;
+  padding: 0 4%;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.link {
+  text-decoration: none;
+  color: inherit;
+  padding: 0 4%;
+}
+
+.link:hover .word {
+  transform: scale(1.1);
+  color: yellow; 
+}
+
+.loggedInUser {
+  display: flex;
+  align-items: center;
+}
+
+.loggedInText {
+  margin-right: 10px;
+  color: #555; 
+}
+.loggedInText
+{
+  font-weight: bold;
+}
