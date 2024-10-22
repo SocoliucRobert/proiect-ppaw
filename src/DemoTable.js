@@ -11,6 +11,7 @@ const DemoTable = () => {
             const { data, error } = await supabase
                 .from('users')
                 .select('*');
+                console.log(data);
 
             if (error) {
                 console.error('Error fetching users:', error);
@@ -24,7 +25,7 @@ const DemoTable = () => {
     }, []);
 
     if (loading) {
-        return <div>Se încarcă...</div>;
+        return <div>Se încarca</div>;
     }
 
     return (

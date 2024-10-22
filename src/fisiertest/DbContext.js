@@ -5,6 +5,7 @@ import Quiz from './Quiz';
 class DbContext {
     async getUsers() {
         const { data, error } = await supabase.from('users').select('*');
+        console.log(data);
         if (error) throw error;
         return data.map(user => new User(user.id, user.username, user.email));
     }
