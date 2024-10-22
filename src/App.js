@@ -11,6 +11,7 @@ import supabase from './supabaseClient';
 
 
 
+
 const supabaseUrl = "https://knqwydabuhbuhyalanms.supabase.co";
 const supabaseKey = process.env.SUPABASE_KEY;
 
@@ -19,6 +20,7 @@ const supabaseKey = process.env.SUPABASE_KEY;
 function App() {
   return (
     <Router>
+
       
       <Routes>
         
