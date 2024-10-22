@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import supabase from './supabaseClient'; 
 
+
 const DemoTable = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -20,6 +21,8 @@ const DemoTable = () => {
             }
             setLoading(false);
         };
+
+
 
         fetchUsers();
     }, []);
