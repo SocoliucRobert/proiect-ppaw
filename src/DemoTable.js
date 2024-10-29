@@ -6,18 +6,7 @@ const DemoTable = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchUsers = async () => {
-            const userAccessor = new UserAccessor(); 
-            try {
-                const data = await userAccessor.fetchUsers(); 
-                setUsers(data);
-            } catch (error) {
-                console.error('Error fetching users:', error);
-            }
-            setLoading(false);
-        };
-
-        fetchUsers();
+      UserAccessor();
     }, []);
 
     if (loading) {
