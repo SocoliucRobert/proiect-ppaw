@@ -1,7 +1,5 @@
-
 import React, { useEffect, useState } from 'react';
-import supabase from './supabaseClient'; 
-
+import { UserAccessor } from './bazadate/databaseFirst'; // Importă UserAccessor
 
 const DemoTable = () => {
     const [users, setUsers] = useState([]);
@@ -9,26 +7,21 @@ const DemoTable = () => {
 
     useEffect(() => {
         const fetchUsers = async () => {
-            const { data, error } = await supabase
-                .from('users')
-                .select('*');
-                console.log(data);
-
-            if (error) {
-                console.error('Error fetching users:', error);
-            } else {
+            const userAccessor = new UserAccessor(); 
+            try {
+                const data = await userAccessor.fetchUsers(); 
                 setUsers(data);
+            } catch (error) {
+                console.error('Error fetching users:', error);
             }
             setLoading(false);
         };
-
-
 
         fetchUsers();
     }, []);
 
     if (loading) {
-        return <div>Se încarca</div>;
+        return <div>Se încarcă</div>;
     }
 
     return (

@@ -4,9 +4,12 @@ import Meniusus from "./Meniusus";
 import Meniujos from "./Meniujos";
 import UsersTable from "./DemoTable";
 
+
+
 import supabase from "./supabaseClient";
 import { useState } from "react";
 import { useEffect } from "react";
+
 
 const Acasa = () => {
 
@@ -15,6 +18,7 @@ const Acasa = () => {
   return (
     <div>
       <Meniusus />
+      <rpc/>
 <UsersTable/>
       <div className={styles.imageContainer}>
       
