@@ -7,8 +7,8 @@ class UserAccessor {
     const { data, error } = await supabase
       .from('users')
       .select('*')
-      .eq('id', 1) // Easy loading pentru a aduce doar userul cu indicele 1
-      .limit(2); // Exemplu de limitare a rezultatelor pentru o încărcare mai rapidă
+      
+      .limit(10); // Limitare pentru incarcare mai rapida
     if (error) throw error;
     return data;
   }
