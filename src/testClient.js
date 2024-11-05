@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 
-import { UserAccessor } from './bazadate/DatabaseFirst'; 
+import { UserAccessor } from './bazadate/databaseFirst'; 
 
 const DemoTable = () => {
 
