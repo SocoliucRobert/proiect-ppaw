@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'; 
+import UserAccessor from './UserModel';
 import UserView from './UserView';
-import { UserAccessor } from './UserModel';
-
-const userAccessor = new UserAccessor();
 
 const UserController = () => {
   const [users, setUsers] = useState([]);
+  const userAccessor = new UserAccessor();
 
   const loadUsers = async () => {
     try {
@@ -16,20 +15,31 @@ const UserController = () => {
     }
   };
 
-  const addUser = async (user) => {
+  const handleAddUser = async (user) => {
     try {
       await userAccessor.createUser(user);
-      loadUsers(); // Reîncarcă utilizatorii după adăugare
+      loadUsers(); 
     } catch (error) {
       console.error('Eroare la adăugarea utilizatorului:', error);
     }
   };
 
+  const handleUpdateUser = async (user) => {
+    try {
+      await userAccessor.updateUser(user.id, { username: user.username, email: user.email });
+      loadUsers();
+    } catch (error) {
+      console.error('Eroare la actualizarea utilizatorului:', error);
+    }
+  };
+
   useEffect(() => {
-    loadUsers(); // Încarcă utilizatorii la montarea componentului
+    loadUsers();
   }, []);
 
-  return <UserView users={users} onAddUser={addUser} />;
+  return (
+    <UserView users={users} onAddUser={handleAddUser} onUpdateUser={handleUpdateUser} />
+  );
 };
 
 export default UserController;
