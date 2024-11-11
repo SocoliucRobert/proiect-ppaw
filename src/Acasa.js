@@ -5,7 +5,8 @@ import Meniusus from "./Meniusus";
 
 
 
-import UserController from "./MVCFormat/UserController";
+import UserController from "./UserController";
+import UserControllerr from "./UserControllerr";
 
 
 const Acasa = () => {
@@ -17,7 +18,7 @@ const Acasa = () => {
       <Meniusus />
     
 
-      <UserController />
+      <UserControllerr />
      
       <div className={styles.imageContainer}>
       
