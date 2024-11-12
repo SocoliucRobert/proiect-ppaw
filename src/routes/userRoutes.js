@@ -1,22 +1,22 @@
 const express = require('express');
-const UserAccessor = require('../models/UserAccessor');  // Correct path to UserAccessor model
+const UserAccessor = require('../models/UserAccessor');  
 const { fetchUserWithQuizzes, fetchUsers } = require('../controllers/userController');
 
 const router = express.Router();
 const userAccessor = new UserAccessor();
 
-// Route to get all users
+// GET
 router.get('/users', async (req, res) => {
   try {
     const users = await userAccessor.fetchUsers();
-    res.json(users);  // Return the list of users as JSON
+    res.json(users);  
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch users' });
   }
 });
 
 
-// Route to create a new user
+// CREATE
 router.post('/users', async (req, res) => {
   try {
     const newUser = await userAccessor.createUser(req.body);
@@ -26,7 +26,7 @@ router.post('/users', async (req, res) => {
   }
 });
 
-// PUT: Update an existing user
+// PUT
 router.put('/users/:id', async (req, res) => {
     const { id } = req.params;
     const { username, email } = req.body;
@@ -38,7 +38,7 @@ router.put('/users/:id', async (req, res) => {
     }
   });
 
-  // DELETE: Delete an existing user
+  // DELETE
 router.delete('/users/:id', async (req, res) => {
     const { id } = req.params;
     try {

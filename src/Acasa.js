@@ -18,7 +18,7 @@ const Acasa = () => {
       <Meniusus />
     
 
-      <UserControllerr />
+      <UserController />
      
       <div className={styles.imageContainer}>
       

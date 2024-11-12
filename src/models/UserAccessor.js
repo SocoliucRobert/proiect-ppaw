@@ -1,11 +1,11 @@
-const supabase = require('../supabaseClient'); // Ensure correct path to supabaseClient.js
+const supabase = require('../supabaseClient'); 
 
 class UserAccessor {
   async fetchUsers() {
     const { data, error } = await supabase
       .from('users')
       .select('*')
-      .limit(10); // Optional: limit results for faster loading
+      .limit(10); 
     if (error) throw error;
     return data;
   }
@@ -30,9 +30,9 @@ class UserAccessor {
 async fetchUserWithQuizzes(userId) {
     const { data, error } = await supabase
       .from('users')
-      .select('*, quizzes(*)')  // Fetch quizzes related to the user
+      .select('*, quizzes(*)')  
       .eq('id', userId)
-      .single();  // Get a single user
+      .single();  
     
     if (error) throw error;
     return data;
