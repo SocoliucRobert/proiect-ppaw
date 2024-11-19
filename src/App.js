@@ -6,15 +6,6 @@ import Login from './Login';
 import Inregistrare from './Inregistrare';
 import ResetareParola from './ResetareParola';
 import Updateparola from './Updateparola';
-import DemoTable from './DemoTable';
-import supabase from './supabaseClient';
-
-
-
-
-const supabaseUrl = "https://knqwydabuhbuhyalanms.supabase.co";
-const supabaseKey = process.env.SUPABASE_KEY;
-
 
 
 function App() {

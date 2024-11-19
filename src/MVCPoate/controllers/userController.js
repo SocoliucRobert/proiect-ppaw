@@ -1,5 +1,5 @@
 // userController.js
-const UserAccessor = require('../models/UserAccessor'); // Assuming you have this accessor class
+const UserAccessor = require('../../models/UserAccessor'); // Assuming you have this accessor class
 
 const userAccessor = new UserAccessor();
 

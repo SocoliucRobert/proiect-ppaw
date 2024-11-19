@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { UserAccessor } from './bazadate/database';
+import { UserAccessor } from '../bazadate/database';
 
 const DemoTable = () => {
   const [users, setUsers] = useState([]);

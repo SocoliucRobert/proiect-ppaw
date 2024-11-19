@@ -1,5 +1,5 @@
 const express = require('express');
-const UserAccessor = require('../models/UserAccessor');  
+const UserAccessor = require('../../models/UserAccessor');  
 const { fetchUserWithQuizzes, fetchUsers } = require('../controllers/userController');
 
 const router = express.Router();
