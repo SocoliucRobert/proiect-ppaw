@@ -2,13 +2,7 @@ import React, { useState } from 'react';
 import supabase from './supabaseClient';
 import styles from './stilizare/contact.module.css';
 import Meniusus from './Meniusus';
-import imagineMare from './poze/imagineMare.png';  
 import Meniujos from './Meniujos';
-import numeIcon from './poze/nume.png';
-import emailIcon from './poze/email.png';
-import telefonIcon from './poze/telefon.png';
-import mesajIcon from './poze/mesaj.png';
-
 const Contact = () => {
   const [formData, setFormData] = useState({
     first_name: '',
