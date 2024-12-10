@@ -6,6 +6,7 @@ import Login from './Login';
 import Inregistrare from './Inregistrare';
 import ResetareParola from './ResetareParola';
 import Updateparola from './Updateparola';
+import Admineditarequestions from './Admin/Admineditarequestions';
 
 
 function App() {
@@ -15,9 +16,9 @@ function App() {
       
       <Routes>
         
-      <Route path="/" element={<Acasa/>} />
+      <Route path="/" element={<Admineditarequestions/>} />
         <Route path="/Acasa" element={<Acasa />} />
-       
+        <Route path="/Admineditarequestions" element={<Admineditarequestions />} />
         <Route path="/Contact" element={<Contact />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/Inregistrare" element={<Inregistrare />} />
