@@ -1,21 +1,19 @@
 import React from "react";
 import styles from "./stilizare/acasa.module.css";
 import Meniusus from "./Meniusus";
-import QuizzesDashboard from "./QuizzesDashboard";
+import AvailableQuizzes from "./AvailableQuizzes";
 
 
 
 
-
-
-const Acasa = () => {
+const Chestionare = () => {
 
 
  
   return (
     <div>
       <Meniusus />
-      <QuizzesDashboard/>
+     <AvailableQuizzes/>
     
 
 
@@ -38,4 +36,4 @@ const Acasa = () => {
   );
 };
 
-export default Acasa;
+export default Chestionare;

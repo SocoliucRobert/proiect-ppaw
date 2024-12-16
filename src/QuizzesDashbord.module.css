@@ -1,0 +1,45 @@
+.dashboard {
+  padding: 16px;
+  background-color: #f8f9fa;
+}
+
+.subscriptionGroup {
+  margin-bottom: 24px;
+}
+
+.subscriptionTitle {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  color: #2c3e50;
+}
+
+.quizGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.quizCard {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.quizCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.quizCard h4 {
+  margin-bottom: 12px;
+  color: #34495e;
+}
+
+.quizCard p {
+  margin: 4px 0;
+  color: #7f8c8d;
+}

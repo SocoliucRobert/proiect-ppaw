@@ -94,8 +94,8 @@ const Meniusus = () => {
         <img src={baraImage} alt="Auto" className={styles.image} />
         <motion.div className={styles.wordsContainer}>
           <Link to="/Acasa" className={styles.link}><motion.span className={styles.word}>ACASĂ</motion.span></Link>
-          <Link to="/Acasa" className={styles.link}><motion.span className={styles.word}>CHESTIONARE</motion.span></Link>
-          <Link to="/Acasa" className={styles.link}><motion.span className={styles.word}>ABONAMENTE</motion.span></Link>
+          <Link to="/Chestionare" className={styles.link}><motion.span className={styles.word}>CHESTIONARE</motion.span></Link>
+          <Link to="/Abonamente" className={styles.link}><motion.span className={styles.word}>ABONAMENTE</motion.span></Link>
           <Link to="/Contact" className={styles.link}><motion.span className={styles.word}>CONTACT</motion.span></Link>
        
        

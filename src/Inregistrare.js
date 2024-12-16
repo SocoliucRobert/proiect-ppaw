@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from './stilizare/inregistrare.module.css';
 import Meniusus from './Meniusus';
 import Meniujos from './Meniujos';
 import supabase from './supabaseClient';
-import { useNavigate } from 'react-router-dom';
 
 const Inregistrare = () => {
   const navigate = useNavigate();
@@ -14,35 +13,44 @@ const Inregistrare = () => {
 
   const handleSignUp = async (event) => {
     event.preventDefault();
+
     try {
+      // Create a new user in Supabase Auth
       const { error } = await supabase.auth.signUp({
         email: email,
-        password: password
+        password: password,
       });
 
       if (error) {
         throw error;
       }
 
-     
+      // Derive username and set subscription plan
+      const username = email.split('@')[0];
+      const subscriptionPlan = 'Plan Gratuit';
+
+      // Insert user into the 'users' table
       const { data, error: insertError } = await supabase
         .from('users')
-        .insert([
+        .upsert([
           {
-            adresa_email: email
-          }
+            email: email,
+            username: username,
+            subscription_plan: subscriptionPlan,
+          },
         ]);
 
       if (insertError) {
         throw insertError;
       }
 
-      setConfirmationMessage('A fost trimis un email de confirmare la adresa dată');
+      // Display confirmation message
+      setConfirmationMessage('A fost trimis un email de confirmare la adresa dată.');
       setEmail('');
       setPassword('');
     } catch (error) {
       console.error('Error during signup:', error.message);
-      setConfirmationMessage('A fost trimis un email de confirmare la adresa dată');
+      setConfirmationMessage('Eroare la înregistrare. Încearcă din nou.');
       setEmail('');
       setPassword('');
     }
@@ -76,7 +84,7 @@ const Inregistrare = () => {
             />
           </div>
           <div className={styles.formGroup}>
-            <button type="submit6">Înregistrare</button>
+            <button type="submit">Înregistrare</button>
           </div>
           {confirmationMessage && (
             <div className={styles.confirmationMessage}>

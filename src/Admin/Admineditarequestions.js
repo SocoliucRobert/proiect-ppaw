@@ -6,6 +6,7 @@ import supabase from '../supabaseClient';
 const Admineditarequestions = () => {
   const [questions, setQuestions] = useState([]);
   const [newQuestion, setNewQuestion] = useState({ category: '', question_text: '' });
+  const [successMessage, setSuccessMessage] = useState(''); // State for success message
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,7 +42,8 @@ const Admineditarequestions = () => {
         .update(updatedQuestion)
         .eq('id', question.id);
       if (error) throw error;
-      alert('Întrebarea a fost actualizată cu succes!');
+      setSuccessMessage('Întrebarea a fost actualizată cu succes!');
+      setTimeout(() => setSuccessMessage(''), 3000); // Clear success message after 3 seconds
       setQuestions((prevQuestions) =>
         prevQuestions.map((q) => (q.id === questionId ? { ...q, editing: false } : q))
       );
@@ -56,7 +58,8 @@ const Admineditarequestions = () => {
       try {
         const { error } = await supabase.from('questions').delete().eq('id', question.id);
         if (error) throw error;
-        alert('Întrebarea a fost ștearsă cu succes!');
+        setSuccessMessage('Întrebarea a fost ștearsă cu succes!');
+        setTimeout(() => setSuccessMessage(''), 3000);
         setQuestions((prevQuestions) => prevQuestions.filter((q) => q.id !== question.id));
       } catch (error) {
         console.error('Error deleting question:', error.message);
@@ -75,43 +78,37 @@ const Admineditarequestions = () => {
 
   const handleAddQuestion = async () => {
     try {
-      console.log('New Question:', newQuestion);
-  
       if (!newQuestion.category || !newQuestion.question_text) {
         alert('Completează toate câmpurile!');
         return;
       }
-  
-      const { data, error } = await supabase
-        .from('questions')
-        .upsert([newQuestion], { onConflict: ['category', 'question_text'] });  
-  
+
+      const { data, error } = await supabase.from('questions').insert([newQuestion]);
+
       if (error) {
         console.error('Supabase error:', error);
         alert('Eroare la adăugarea întrebării!');
         return;
       }
-  
-      if (data && data.length > 0) {
-        alert('Întrebarea a fost adăugată cu succes!');
+
+      if (data) {
+        setSuccessMessage('Întrebarea a fost adăugată cu succes!');
+        setTimeout(() => setSuccessMessage(''), 3000);
         setQuestions((prevQuestions) => [...prevQuestions, { ...data[0], editing: false }]);
-        setNewQuestion({ category: '', question_text: '' });
-      } else {
-        console.error('No data returned:', data);
-        alert('Eroare la adăugarea întrebării! Nu au fost returnate date.');
+        setNewQuestion({ category: '', question_text: '' }); // Reset the form
       }
     } catch (error) {
       console.error('Unexpected error:', error);
       alert('Eroare la adăugarea întrebării!');
     }
   };
-  
-  
-  
 
   return (
     <div className={styles.adminContainer}>
       <h2>Lista Întrebări</h2>
+
+      {/* Success Message */}
+      {successMessage && <div className={styles.successMessage}>{successMessage}</div>}
 
       {/* Adăugare Întrebare Nouă */}
       <div className={styles.addQuestionForm}>

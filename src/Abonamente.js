@@ -1,23 +1,24 @@
 import React from "react";
 import styles from "./stilizare/acasa.module.css";
 import Meniusus from "./Meniusus";
-import QuizzesDashboard from "./QuizzesDashboard";
+import SubscriptionsDashboard from "./SubscriptionsDasboard";
 
 
 
 
 
 
-const Acasa = () => {
+
+const Abonamente = () => {
 
 
  
   return (
     <div>
       <Meniusus />
-      <QuizzesDashboard/>
+     
     
-
+<SubscriptionsDashboard/>
 
      
       <div className={styles.imageContainer}>
@@ -38,4 +39,4 @@ const Acasa = () => {
   );
 };
 
-export default Acasa;
+export default Abonamente;

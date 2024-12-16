@@ -1,0 +1,63 @@
+.dashboard {
+  padding: 16px;
+  background-color: #f9f9f9;
+}
+
+.subscriptionGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.subscriptionCard {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.subscriptionCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.subscriptionCard h3 {
+  font-size: 20px;
+  margin-bottom: 12px;
+  color: #34495e;
+}
+
+.subscriptionCard p {
+  margin: 4px 0;
+  color: #7f8c8d;
+}
+
+.buyButton {
+  margin-top: 12px;
+  padding: 10px 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.buyButton:hover {
+  background-color: #0056b3;
+}
+
+.ownedButton {
+  margin-top: 12px;
+  padding: 10px 16px;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: not-allowed;
+}
