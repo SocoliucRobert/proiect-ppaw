@@ -66,7 +66,7 @@ const SubscriptionsDashboard = () => {
  
   const handleBuySubscription = async (subscription) => {
     if (!userEmail) {
-      alert('Trebuie sa fii conectat pentru a cumpara o subscriptie!');
+      alert('Trebuie sa fii conectat pentru a cumpara un abonament !');
       
       return;
     }
@@ -95,7 +95,7 @@ const SubscriptionsDashboard = () => {
         throw updateError;
       }
   
-      alert(`You've successfully purchased the ${subscription.name} plan!`);
+      alert(`Ai trecut la abonamentul " ${subscription.name}"!`);
       setUserSubscription(subscription.name); 
     } catch (error) {
       console.error('Error purchasing subscription:', error.message);
@@ -123,7 +123,7 @@ const SubscriptionsDashboard = () => {
 
             {userSubscription === subscription.name ? (
               <button className={styles.ownedButton} disabled>
-                Detinut
+                Deținut
               </button>
             ) : (
               <button

@@ -1,45 +1,67 @@
 .dashboard {
-  padding: 16px;
-  background-color: #f8f9fa;
+  padding: 20px;
+  max-width: 1200px;
+  margin: auto;
 }
 
 .subscriptionGroup {
-  margin-bottom: 24px;
+  margin-bottom: 40px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 20px;
 }
 
 .subscriptionTitle {
-  font-size: 22px;
-  font-weight: bold;
-  margin-bottom: 16px;
-  color: #2c3e50;
+  font-size: 1.8rem;
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+  text-transform: uppercase;
 }
 
 .quizGrid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  display: flex;
+  flex-wrap: wrap; /* Permite cardurilor să treacă pe linia următoare dacă e necesar */
+  justify-content: center; /* Aliniere centrală a cardurilor */
+  gap: 20px;
 }
 
 .quizCard {
-  border: 1px solid #ccc;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
   border-radius: 8px;
-  padding: 16px;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.quizCard:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  padding: 15px;
+  width: 250px; /* Dimensiune fixă a cardului */
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
 }
 
 .quizCard h4 {
-  margin-bottom: 12px;
-  color: #34495e;
+  margin: 0;
+  font-size: 1.5rem;
+  color: #007bff;
 }
 
 .quizCard p {
-  margin: 4px 0;
-  color: #7f8c8d;
+  margin: 5px 0;
+  color: #555;
+}
+
+.quizCard:hover {
+  transform: scale(1.05);
+}
+
+.subscriptionFooter {
+  text-align: center;
+  font-size: 1rem;
+  color: #666;
+  margin-top: 10px;
+}
+
+.planDescription {
+  text-align: center;
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 15px;
+  font-style: italic;
 }

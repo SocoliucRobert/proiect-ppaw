@@ -170,8 +170,7 @@ const Login = () => {
             
             <div className={styles.socialLoginText}>sau folositi una dintre opțiunile:</div>
             <div className={styles.loginIcons}>
-              <img src={googleIcon} alt="Google" className={styles.loginIcon} onClick={handleGoogleLogin} />
-              <img src={facebookIcon} alt="Facebook" className={styles.loginIcon} onClick={handleFacebookLogin} />
+             
             </div>
           </div>
         </div>

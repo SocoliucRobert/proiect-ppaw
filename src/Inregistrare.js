@@ -15,7 +15,7 @@ const Inregistrare = () => {
     event.preventDefault();
 
     try {
-      // Create a new user in Supabase Auth
+
       const { error } = await supabase.auth.signUp({
         email: email,
         password: password,
@@ -25,11 +25,10 @@ const Inregistrare = () => {
         throw error;
       }
 
-      // Derive username and set subscription plan
       const username = email.split('@')[0];
       const subscriptionPlan = 'Plan Gratuit';
 
-      // Insert user into the 'users' table
+
       const { data, error: insertError } = await supabase
         .from('users')
         .upsert([
@@ -44,7 +43,6 @@ const Inregistrare = () => {
         throw insertError;
       }
 
-      // Display confirmation message
       setConfirmationMessage('A fost trimis un email de confirmare la adresa dată.');
       setEmail('');
       setPassword('');
@@ -84,7 +82,7 @@ const Inregistrare = () => {
             />
           </div>
           <div className={styles.formGroup}>
-            <button type="submit">Înregistrare</button>
+            <button type="submit6">Înregistrare</button>
           </div>
           {confirmationMessage && (
             <div className={styles.confirmationMessage}>

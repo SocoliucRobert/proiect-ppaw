@@ -17,17 +17,25 @@
   border-radius: 8px;
   padding: 20px;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; 
+  min-height: 100px; 
 }
 
 .quizCard h3 {
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   color: #333;
+  white-space: nowrap; /* Previne textul să treacă pe alt rând */
+  overflow: hidden; /* Ascunde textul care depășește */
+  text-overflow: ellipsis; /* Adaugă puncte de suspensie (...) */
 }
 
 .quizCard p {
   margin: 5px 0;
   color: #555;
+  flex: 1; /* Asigură spațiere uniformă pentru conținut */
 }
 
 .startQuizButton {
@@ -39,6 +47,7 @@
   cursor: pointer;
   margin-top: 10px;
   width: 100%;
+  align-self: center; /* Fixează butonul pe centru orizontal */
 }
 
 .startQuizButton:hover {

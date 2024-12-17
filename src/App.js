@@ -9,6 +9,8 @@ import Updateparola from './Updateparola';
 import Admineditarequestions from './Admin/Admineditarequestions';
 import Chestionare from './Chestionare';
 import Abonamente from './Abonamente';
+import QuizPage from './QuizPage';
+import AvailableQuizzes from './AvailableQuizzes';
 
 
 function App() {
@@ -22,9 +24,9 @@ function App() {
         <Route path="/Acasa" element={<Acasa />} />
         <Route path="/Chestionare" element={<Chestionare/>} />
         <Route path="/Abonamente" element={<Abonamente/>} />
-       
+        <Route path="/AvailableQuizzes" element={<AvailableQuizzes/>} />
+        <Route path="/quiz/:id" element={<QuizPage />} />
         <Route path="/Admineditarequestions" element={<Admineditarequestions />} />
-
         <Route path="/Contact" element={<Contact />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/Inregistrare" element={<Inregistrare />} />
