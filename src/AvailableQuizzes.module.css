@@ -27,15 +27,15 @@
   margin: 0;
   font-size: 1.2rem;
   color: #333;
-  white-space: nowrap; /* Previne textul să treacă pe alt rând */
-  overflow: hidden; /* Ascunde textul care depășește */
-  text-overflow: ellipsis; /* Adaugă puncte de suspensie (...) */
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
 }
 
 .quizCard p {
   margin: 5px 0;
   color: #555;
-  flex: 1; /* Asigură spațiere uniformă pentru conținut */
+  flex: 1; 
 }
 
 .startQuizButton {
@@ -47,7 +47,7 @@
   cursor: pointer;
   margin-top: 10px;
   width: 100%;
-  align-self: center; /* Fixează butonul pe centru orizontal */
+  align-self: center; 
 }
 
 .startQuizButton:hover {

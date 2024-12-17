@@ -7,7 +7,7 @@ const QuizPage = () => {
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
-  const [selectedAnswer, setSelectedAnswer] = useState(null); // Track the selected answer
+  const [selectedAnswer, setSelectedAnswer] = useState(null); 
   const [userPlan, setUserPlan] = useState('');
   const navigate = useNavigate();
 
