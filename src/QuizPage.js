@@ -7,33 +7,35 @@ const QuizPage = () => {
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
-  const [selectedAnswer, setSelectedAnswer] = useState(null); 
-  const [userPlan, setUserPlan] = useState('');
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [userEmail, setUserEmail] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchQuestions();
-    fetchUserPlan();
+    checkAuthentication();
   }, []);
 
-  const fetchUserPlan = async () => {
+  useEffect(() => {
+    if (userEmail) fetchQuestions();
+  }, [userEmail]);
+
+  const checkAuthentication = async () => {
     try {
       const {
         data: { session },
+        error,
       } = await supabase.auth.getSession();
 
-      if (session) {
-        const { data, error } = await supabase
-          .from('users')
-          .select('subscription_plan')
-          .eq('email', session.user.email)
-          .single();
+      if (error) throw error;
 
-        if (error) throw error;
-        setUserPlan(data.subscription_plan || '');
+      if (session) {
+        const email = session.user?.email || '';
+        setUserEmail(email);
+      } else {
+        navigate('/Login');
       }
     } catch (error) {
-      console.error('Error fetching user plan:', error.message);
+      console.error('Error checking authentication:', error.message);
     }
   };
 
@@ -64,12 +66,34 @@ const QuizPage = () => {
     setTimeout(() => {
       if (currentQuestionIndex + 1 < questions.length) {
         setCurrentQuestionIndex((prev) => prev + 1);
-        setSelectedAnswer(null); 
+        setSelectedAnswer(null);
       } else {
-        alert(`Chestionar finalizat! Punctajul tau: ${score + (isCorrect ? 1 : 0)} / ${questions.length}`);
-        navigate('/Chestionare');
+        finishQuiz();
       }
-    }, 1500); 
+    }, 1500);
+  };
+
+  const finishQuiz = async () => {
+    try {
+      const finalScore = score;
+
+      const { error } = await supabase.from('completed_quizzes').insert([
+        {
+          email: userEmail,
+          quiz_id: 1, // Replace with the actual quiz ID if you have dynamic quiz loading
+          score: finalScore,
+          completed_at: new Date(),
+        },
+      ]);
+
+      if (error) throw error;
+
+      alert(`Chestionar completat! Punctajul tău: ${finalScore} / ${questions.length}`);
+      navigate('/Chestionare');
+    } catch (error) {
+      console.error('Error saving quiz completion:', error.message);
+      alert('A apărut o eroare la salvarea progresului chestionarului.');
+    }
   };
 
   const currentQuestion = questions[currentQuestionIndex];
@@ -87,7 +111,7 @@ const QuizPage = () => {
 
       {currentQuestion ? (
         <div className={styles.questionContainer}>
-          <h2>Intrebarea {currentQuestionIndex + 1}</h2>
+          <h2>Întrebarea {currentQuestionIndex + 1}</h2>
           <p>{currentQuestion.question_text}</p>
           <div className={styles.answers}>
             {currentQuestion.answers.map((answer) => {
@@ -99,7 +123,7 @@ const QuizPage = () => {
                   key={answer.id}
                   onClick={() => handleAnswer(isCorrect, answer.id)}
                   className={
-                    userPlan === 'Plan Pro' && selectedAnswer
+                    selectedAnswer
                       ? isCorrect
                         ? styles.correctAnswer
                         : isSelected
@@ -122,7 +146,7 @@ const QuizPage = () => {
       <div className={styles.quizFooter}>
         {questions.length > 0 && (
           <p>
-            Question {currentQuestionIndex + 1} of {questions.length}
+            Întrebarea {currentQuestionIndex + 1} din {questions.length}
           </p>
         )}
       </div>

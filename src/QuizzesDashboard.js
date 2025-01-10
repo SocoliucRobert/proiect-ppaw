@@ -78,7 +78,7 @@ const QuizzesDashboard = () => {
             {data.quizzes.map((quiz) => (
               <div key={quiz.id} className={styles.quizCard}>
                 <h4>{quiz.category}</h4>
-               
+              
               </div>
             ))}
           </div>
