@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react"; 
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./AdmindContact.module.css";
 import Meniusus from "../Meniusus";
@@ -42,7 +42,10 @@ const AdminContact = () => {
 
   const fetchContacts = async () => {
     try {
-      const { data, error } = await supabase.from("contact").select("*");
+      const { data, error } = await supabase
+        .from("contact")
+        .select("*")
+        .is("deletestate", null); // Only fetch rows where deletestate is null
       if (error) throw error;
       setContacts(data);
     } catch (error) {
@@ -55,8 +58,9 @@ const AdminContact = () => {
       try {
         const { error } = await supabase
           .from("contact")
-          .delete()
+          .update({ deletestate: true }) // Set deletestate to true
           .eq("id", contactId);
+
         if (error) throw error;
 
         setMessage("Mesajul a fost șters cu succes!");

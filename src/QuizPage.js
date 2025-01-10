@@ -9,6 +9,7 @@ const QuizPage = () => {
   const [score, setScore] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [userEmail, setUserEmail] = useState('');
+  const [userSubscription, setUserSubscription] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,7 +17,10 @@ const QuizPage = () => {
   }, []);
 
   useEffect(() => {
-    if (userEmail) fetchQuestions();
+    if (userEmail) {
+      fetchQuestions();
+      fetchUserSubscription(userEmail);
+    }
   }, [userEmail]);
 
   const checkAuthentication = async () => {
@@ -42,19 +46,36 @@ const QuizPage = () => {
   const fetchQuestions = async () => {
     try {
       const { data, error } = await supabase
-        .from('questions')
-        .select('id, question_text, answers(id, answer_text, is_correct)');
-
+        .from("questions")
+        .select("id, question_text, category, answers(id, answer_text, is_correct)");
+  
       if (error) throw error;
-
+  
       const formattedQuestions = data.map((q) => ({
         ...q,
         answers: q.answers || [],
       }));
-
+  
       setQuestions(formattedQuestions);
     } catch (error) {
-      console.error('Error fetching questions:', error.message);
+      console.error("Error fetching questions:", error.message);
+    }
+  };
+  
+
+  const fetchUserSubscription = async (email) => {
+    try {
+      const { data, error } = await supabase
+        .from('users')
+        .select('subscription_plan')
+        .eq('email', email)
+        .single();
+
+      if (error) throw error;
+
+      setUserSubscription(data.subscription_plan || '');
+    } catch (error) {
+      console.error('Error fetching user subscription:', error.message);
     }
   };
 
@@ -76,26 +97,32 @@ const QuizPage = () => {
   const finishQuiz = async () => {
     try {
       const finalScore = score;
-
-      const { error } = await supabase.from('completed_quizzes').insert([
+  
+      // Get the category of the current question
+      const currentCategory =
+        questions[currentQuestionIndex]?.category || "Unknown";
+  
+      const { error } = await supabase.from("completed_quizzes").insert([
         {
           email: userEmail,
-          quiz_id: 1, // Replace with the actual quiz ID if you have dynamic quiz loading
+          category: currentCategory, // Save the category dynamically
           score: finalScore,
           completed_at: new Date(),
         },
       ]);
-
+  
       if (error) throw error;
-
-      alert(`Chestionar completat! Punctajul tău: ${finalScore} / ${questions.length}`);
-      navigate('/Chestionare');
+  
+      alert(
+        `Chestionar completat! Punctajul tău: ${finalScore} / ${questions.length}`
+      );
+      navigate("/Chestionare");
     } catch (error) {
-      console.error('Error saving quiz completion:', error.message);
-      alert('A apărut o eroare la salvarea progresului chestionarului.');
+      console.error("Error saving quiz completion:", error.message);
+      alert("A apărut o eroare la salvarea progresului chestionarului.");
     }
   };
-
+  
   const currentQuestion = questions[currentQuestionIndex];
 
   return (
@@ -118,19 +145,22 @@ const QuizPage = () => {
               const isCorrect = answer.is_correct;
               const isSelected = answer.id === selectedAnswer;
 
+              const buttonStyle =
+                userSubscription === 'Plan Pro'
+                  ? selectedAnswer
+                    ? isCorrect
+                      ? styles.correctAnswer
+                      : isSelected
+                      ? styles.wrongAnswer
+                      : styles.defaultAnswer
+                    : styles.defaultAnswer
+                  : styles.defaultAnswer;
+
               return (
                 <button
                   key={answer.id}
                   onClick={() => handleAnswer(isCorrect, answer.id)}
-                  className={
-                    selectedAnswer
-                      ? isCorrect
-                        ? styles.correctAnswer
-                        : isSelected
-                        ? styles.wrongAnswer
-                        : ''
-                      : ''
-                  }
+                  className={buttonStyle}
                   disabled={!!selectedAnswer}
                 >
                   {answer.answer_text}
