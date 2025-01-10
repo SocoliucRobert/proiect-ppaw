@@ -16,8 +16,7 @@ const QuizzesDashboard = () => {
         .select(`
           id,
           subscription_plan,
-          total_questions,
-          questions (category)
+          questions:question_id (category)
         `);
 
       if (error) throw error;
@@ -28,7 +27,7 @@ const QuizzesDashboard = () => {
         "Plan Pro": "Acces complet la toate chestionarele disponibile, inclusiv statistici și revizuire.",
       };
 
-      
+      // Initialize grouped quizzes with plan descriptions
       const groupedQuizzes = {
         "Plan Gratuit": { quizzes: [], description: planDescriptions["Plan Gratuit"] },
         "Plan Premium": { quizzes: [], description: planDescriptions["Plan Premium"] },
@@ -42,7 +41,6 @@ const QuizzesDashboard = () => {
           groupedQuizzes['Plan Gratuit'].quizzes.push({
             id: quiz.id,
             category,
-            total_questions: quiz.total_questions,
           });
         }
 
@@ -50,14 +48,12 @@ const QuizzesDashboard = () => {
           groupedQuizzes['Plan Premium'].quizzes.push({
             id: quiz.id,
             category,
-            total_questions: quiz.total_questions,
           });
         }
 
         groupedQuizzes['Plan Pro'].quizzes.push({
           id: quiz.id,
           category,
-          total_questions: quiz.total_questions,
         });
       });
 
@@ -78,7 +74,6 @@ const QuizzesDashboard = () => {
             {data.quizzes.map((quiz) => (
               <div key={quiz.id} className={styles.quizCard}>
                 <h4>{quiz.category}</h4>
-              
               </div>
             ))}
           </div>

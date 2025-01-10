@@ -117,3 +117,12 @@
 .actions button:nth-child(1):hover {
   background-color: #388e3c;
 }
+
+.link {
+  text-decoration: none;
+  color: inherit; 
+}
+
+.link:hover {
+  color: #007bff; 
+}

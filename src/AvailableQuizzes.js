@@ -17,44 +17,46 @@ const AvailableQuizzes = () => {
     if (userSubscription) fetchQuizzes();
   }, [userSubscription]);
 
- 
   const checkAuthentication = async () => {
-    const { data: { session }, error } = await supabase.auth.getSession();
-    if (error) {
-      console.error('Error fetching session:', error.message);
-      return;
-    }
+    try {
+      const {
+        data: { session },
+        error,
+      } = await supabase.auth.getSession();
 
-    if (session) {
-      const email = session.user?.email || '';
-      setUserEmail(email);
-      fetchUserSubscription(email);
-    } else {
-      navigate('/Login');
+      if (error) throw error;
+
+      if (session) {
+        const email = session.user?.email || '';
+        setUserEmail(email);
+        fetchUserSubscription(email);
+      } else {
+        navigate('/Login');
+      }
+    } catch (error) {
+      console.error('Error fetching session:', error.message);
     }
   };
-
 
   const fetchUserSubscription = async (email) => {
-    const { data, error } = await supabase
-      .from('users')
-      .select('subscription_plan')
-      .eq('email', email)
-      .single();
+    try {
+      const { data, error } = await supabase
+        .from('users')
+        .select('subscription_plan')
+        .eq('email', email)
+        .single();
 
-    if (error) {
+      if (error) throw error;
+
+      setUserSubscription(data.subscription_plan || '');
+    } catch (error) {
       console.error('Error fetching subscription:', error.message);
-      return;
     }
-
-    setUserSubscription(data.subscription_plan || '');
   };
 
-  
   const fetchQuizzes = async () => {
     let plans = [];
 
-    
     if (userSubscription === 'Plan Pro') {
       plans = ['Plan Gratuit', 'Plan Premium', 'Plan Pro'];
     } else if (userSubscription === 'Plan Premium') {
@@ -68,19 +70,18 @@ const AvailableQuizzes = () => {
         .from('quizzes')
         .select(`
           id,
-          total_questions,
+          subscription_plan,
           question_id,
           questions:question_id (category)
         `)
-        .in('subscription_plan', plans); 
+        .in('subscription_plan', plans);
 
       if (error) throw error;
 
-     
       const updatedQuizzes = data.map((quiz) => ({
-        ...quiz,
-        total_questions: quiz.total_questions || 0, 
-        category: quiz.questions?.category || 'Necunoscut', 
+        id: quiz.id,
+        subscription_plan: quiz.subscription_plan,
+        category: quiz.questions?.category || 'Necunoscut',
       }));
 
       setQuizzes(updatedQuizzes);
@@ -89,7 +90,6 @@ const AvailableQuizzes = () => {
     }
   };
 
-  
   const handleStartQuiz = (quizId) => {
     navigate(`/quiz/${quizId}`);
   };
@@ -97,7 +97,6 @@ const AvailableQuizzes = () => {
   return (
     <div className={styles.dashboard}>
       <h2>Chestionare Disponibile</h2>
-  
       <p>Planul tău: <strong>{userSubscription}</strong></p>
 
       <div className={styles.quizGrid}>
@@ -105,9 +104,8 @@ const AvailableQuizzes = () => {
           quizzes.map((quiz) => (
             <div key={quiz.id} className={styles.quizCard}>
               <h3>{quiz.category}</h3>
-              
-              <button 
-                onClick={() => handleStartQuiz(quiz.id)} 
+              <button
+                onClick={() => handleStartQuiz(quiz.id)}
                 className={styles.startQuizButton}
               >
                 Începe Chestionar

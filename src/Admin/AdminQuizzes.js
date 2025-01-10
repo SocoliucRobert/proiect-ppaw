@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import styles from './AdminQuizzes.module.css';
-import Meniusus from '../Meniusus';
-import supabase from '../supabaseClient';
-
+import React, { useEffect, useState } from "react";
+import styles from "./AdminQuizzes.module.css";
+import Meniusus from "../Meniusus";
+import supabase from "../supabaseClient";
+import { Link } from "react-router-dom";
 const AdminQuizzes = () => {
-  const [subscriptionPlan, setSubscriptionPlan] = useState('');
-  const [totalQuestions, setTotalQuestions] = useState('');
-  const [questionId, setQuestionId] = useState('');
+  const [subscriptionPlan, setSubscriptionPlan] = useState("");
+  const [selectedQuestions, setSelectedQuestions] = useState([]);
   const [quizzes, setQuizzes] = useState([]);
   const [questions, setQuestions] = useState([]);
-  const [editingQuizId, setEditingQuizId] = useState(null);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
+
+  const availablePlans = ["Plan Gratuit", "Plan Premium", "Plan Pro"];
 
   useEffect(() => {
     fetchQuizzes();
@@ -19,179 +19,182 @@ const AdminQuizzes = () => {
 
   const fetchQuizzes = async () => {
     try {
-      const { data, error } = await supabase
-        .from('quizzes')
-        .select(`
+      const { data, error } = await supabase.from("quizzes").select(`
           id,
           subscription_plan,
-          total_questions,
           question_id,
           questions (question_text)
         `);
 
       if (error) throw error;
 
-      setQuizzes(data);
+      const groupedQuizzes = data.reduce((acc, quiz) => {
+        const plan = quiz.subscription_plan || "Unknown";
+        if (!acc[plan]) acc[plan] = [];
+        acc[plan].push(quiz);
+        return acc;
+      }, {});
+
+      setQuizzes(groupedQuizzes);
     } catch (error) {
-      console.error('Error fetching quizzes:', error.message);
+      console.error("Error fetching quizzes:", error.message);
     }
   };
 
   const fetchQuestions = async () => {
     try {
-      const { data, error } = await supabase.from('questions').select('id, question_text');
+      const { data, error } = await supabase
+        .from("questions")
+        .select("id, question_text");
       if (error) throw error;
 
       setQuestions(data);
     } catch (error) {
-      console.error('Error fetching questions:', error.message);
+      console.error("Error fetching questions:", error.message);
     }
   };
 
   const handleAddQuiz = async () => {
-    if (!subscriptionPlan || !totalQuestions || !questionId) {
-      setMessage('Completează toate câmpurile!');
+    if (!subscriptionPlan || selectedQuestions.length === 0) {
+      setMessage("Completează toate câmpurile!");
+      return;
+    }
+
+    if (!availablePlans.includes(subscriptionPlan)) {
+      setMessage("Planul selectat nu este valid!");
       return;
     }
 
     try {
+      const insertData = selectedQuestions.map((questionId) => ({
+        subscription_plan: subscriptionPlan,
+        question_id: questionId,
+      }));
+
       const { data, error } = await supabase
-        .from('quizzes')
-        .insert([
-          {
-            subscription_plan: subscriptionPlan,
-            total_questions: parseInt(totalQuestions, 10),
-            question_id: parseInt(questionId, 10),
-          },
-        ])
+        .from("quizzes")
+        .insert(insertData)
         .select();
 
       if (error) throw error;
 
-      if (data && Array.isArray(data)) {
-        setMessage('Chestionarul a fost adăugat cu succes!');
-        setSubscriptionPlan('');
-        setTotalQuestions('');
-        setQuestionId('');
-        setQuizzes((prev) => [...prev, ...data]);
-      } else {
-        setMessage('Eroare la preluarea chestionarului adăugat!');
-      }
-    } catch (error) {
-      console.error('Error adding quiz:', error.message);
-      setMessage('Eroare la adăugarea chestionarului!');
-    }
-  };
-
-  const handleEditToggle = (quizId) => {
-    setEditingQuizId(quizId);
-    const quizToEdit = quizzes.find((q) => q.id === quizId);
-    if (quizToEdit) {
-      setSubscriptionPlan(quizToEdit.subscription_plan);
-      setTotalQuestions(quizToEdit.total_questions);
-      setQuestionId(quizToEdit.question_id);
-    }
-  };
-
-  const handleUpdateQuiz = async () => {
-    try {
-      const { error } = await supabase
-        .from('quizzes')
-        .update({
-          subscription_plan: subscriptionPlan,
-          total_questions: parseInt(totalQuestions, 10),
-          question_id: parseInt(questionId, 10),
-        })
-        .eq('id', editingQuizId);
-
-      if (error) throw error;
-
-      setMessage('Chestionarul a fost actualizat cu succes!');
-      setEditingQuizId(null);
-      setSubscriptionPlan('');
-      setTotalQuestions('');
-      setQuestionId('');
+      setMessage("Chestionarul a fost adăugat cu succes!");
+      setSubscriptionPlan("");
+      setSelectedQuestions([]);
       fetchQuizzes();
     } catch (error) {
-      console.error('Error updating quiz:', error.message);
-      setMessage('Eroare la actualizarea chestionarului!');
+      console.error("Error adding quiz:", error.message);
+      setMessage("Eroare la adăugarea chestionarului!");
     }
   };
 
-  const handleDeleteQuiz = async (quizId) => {
-    if (window.confirm('Sigur doriți să ștergeți acest chestionar?')) {
+  const handleDeleteQuiz = async (subscriptionPlan) => {
+    if (
+      window.confirm(
+        `Sigur doriți să ștergeți toate chestionarele pentru planul ${subscriptionPlan}?`
+      )
+    ) {
       try {
-        const { error } = await supabase.from('quizzes').delete().eq('id', quizId);
+        const { error } = await supabase
+          .from("quizzes")
+          .delete()
+          .eq("subscription_plan", subscriptionPlan);
         if (error) throw error;
 
-        setMessage('Chestionarul a fost șters cu succes!');
-        setQuizzes((prev) => prev.filter((q) => q.id !== quizId));
+        setMessage(
+          `Chestionarele pentru planul ${subscriptionPlan} au fost șterse cu succes!`
+        );
+        fetchQuizzes();
       } catch (error) {
-        console.error('Error deleting quiz:', error.message);
-        setMessage('Eroare la ștergerea chestionarului!');
+        console.error("Error deleting quizzes:", error.message);
+        setMessage("Eroare la ștergerea chestionarelor!");
       }
     }
+  };
+
+  const handleToggleQuestion = (questionId) => {
+    setSelectedQuestions((prev) =>
+      prev.includes(questionId)
+        ? prev.filter((id) => id !== questionId)
+        : [...prev, questionId]
+    );
   };
 
   return (
     <div>
       <Meniusus />
       <div className={styles.adminContainer}>
-        <div className={styles.sidebar}>
+      <div className={styles.sidebar}>
           <ul>
-            <li>Chestionare</li>
-            <li>Întrebări</li>
-            <li>Răspunsuri</li>
-            <li>Contact</li>
+            <li>
+            <Link to="/AdminQuizzes" className={styles.link}>Chestionare</Link>
+            </li>
+            <li>
+            <Link to="/AdminQuestions" className={styles.link}>Întrebări</Link>
+            </li>
+            <li>
+            <Link to="/AdminAnswers" className={styles.link}>Răspunsuri</Link>
+            </li>
+            <li>
+            <Link to="/AdminContact" className={styles.link}>Contact</Link>
+
+            </li>
           </ul>
         </div>
         <div className={styles.content}>
           <h1>Admin Panel - Chestionare</h1>
           <div className={styles.form}>
-            <select value={questionId} onChange={(e) => setQuestionId(e.target.value)}>
-              <option value="">Selectează Întrebarea</option>
-              {questions.map((q) => (
-                <option key={q.id} value={q.id}>
-                  {q.question_text}
+            <select
+              value={subscriptionPlan}
+              onChange={(e) => setSubscriptionPlan(e.target.value)}
+            >
+              <option value="">Selectează Planul</option>
+              {availablePlans.map((plan) => (
+                <option key={plan} value={plan}>
+                  {plan}
                 </option>
               ))}
             </select>
-            <input
-              type="text"
-              placeholder="Planul Abonamentului"
-              value={subscriptionPlan}
-              onChange={(e) => setSubscriptionPlan(e.target.value)}
-            />
-            <input
-              type="number"
-              placeholder="Număr total de întrebări"
-              value={totalQuestions}
-              onChange={(e) => setTotalQuestions(e.target.value)}
-            />
-            {editingQuizId ? (
-              <button onClick={handleUpdateQuiz}>Actualizează Chestionarul</button>
-            ) : (
-              <button onClick={handleAddQuiz}>Adaugă Chestionar</button>
-            )}
+            <div className={styles.questionList}>
+              <h4>Selectează Întrebări</h4>
+              {questions.map((q) => (
+                <div key={q.id} className={styles.questionItem}>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={selectedQuestions.includes(q.id)}
+                      onChange={() => handleToggleQuestion(q.id)}
+                    />
+                    {q.question_text}
+                  </label>
+                </div>
+              ))}
+            </div>
+            <button className={styles.addButton} onClick={handleAddQuiz}>
+              Adaugă Chestionar
+            </button>
           </div>
           {message && <p className={styles.message}>{message}</p>}
           <div className={styles.quizzesList}>
             <h2>Lista Chestionarelor</h2>
-            {quizzes.map((quiz) => (
-              <div key={quiz.id} className={styles.quizItem}>
-                <p>
-                  <strong>Plan:</strong> {quiz.subscription_plan}
-                </p>
-                <p>
-                  <strong>Întrebare:</strong> {quiz.questions?.question_text || 'N/A'}
-                </p>
-                <p>
-                  <strong>Număr Întrebări:</strong> {quiz.total_questions}
-                </p>
-                <div className={styles.actions}>
-                  <button onClick={() => handleEditToggle(quiz.id)}>Editează</button>
-                  <button onClick={() => handleDeleteQuiz(quiz.id)}>Șterge</button>
+            {Object.entries(quizzes).map(([plan, quizzesForPlan]) => (
+              <div key={plan} className={styles.quizGroup}>
+                <div className={styles.planHeader}>
+                  <h3>{plan}</h3>
+                  <button
+                    className={styles.deleteButton}
+                    onClick={() => handleDeleteQuiz(plan)}
+                  >
+                    Șterge toate
+                  </button>
                 </div>
+                <ul>
+                  {quizzesForPlan.map((quiz) => (
+                    <li key={quiz.id} className={styles.quizItem}>
+                      Întrebare: {quiz.questions?.question_text || "N/A"}
+                    </li>
+                  ))}
+                </ul>
               </div>
             ))}
           </div>

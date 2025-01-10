@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import styles from './AdmindQuestions.module.css';
-import Meniusus from '../Meniusus';
-import supabase from '../supabaseClient';
-
+import React, { useState, useEffect } from "react";
+import styles from "./AdmindQuestions.module.css";
+import Meniusus from "../Meniusus";
+import supabase from "../supabaseClient";
+import { Link } from "react-router-dom";
 const AdminQuestions = () => {
-  const [category, setCategory] = useState('');
-  const [questionText, setQuestionText] = useState('');
+  const [category, setCategory] = useState("");
+  const [questionText, setQuestionText] = useState("");
   const [questions, setQuestions] = useState([]);
   const [editingQuestionId, setEditingQuestionId] = useState(null);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     fetchQuestions();
@@ -16,39 +16,39 @@ const AdminQuestions = () => {
 
   const fetchQuestions = async () => {
     try {
-      const { data, error } = await supabase.from('questions').select('*');
+      const { data, error } = await supabase.from("questions").select("*");
       if (error) throw error;
       setQuestions(data);
     } catch (error) {
-      console.error('Error fetching questions:', error.message);
+      console.error("Error fetching questions:", error.message);
     }
   };
 
   const handleAddQuestion = async () => {
     if (!category || !questionText) {
-      setMessage('Completează toate câmpurile!');
+      setMessage("Completează toate câmpurile!");
       return;
     }
-  
+
     try {
       const { data, error } = await supabase
-        .from('questions')
+        .from("questions")
         .insert([{ category, question_text: questionText }])
         .select(); // Ensure the newly inserted row is returned.
-  
+
       if (error) throw error;
-  
+
       if (data && Array.isArray(data)) {
-        setMessage('Întrebarea a fost adăugată cu succes!');
-        setCategory('');
-        setQuestionText('');
+        setMessage("Întrebarea a fost adăugată cu succes!");
+        setCategory("");
+        setQuestionText("");
         setQuestions((prev) => [...prev, ...data]);
       } else {
-        setMessage('Eroare la preluarea întrebării adăugate!');
+        setMessage("Eroare la preluarea întrebării adăugate!");
       }
     } catch (error) {
-      console.error('Error adding question:', error.message);
-      setMessage('Eroare la adăugarea întrebării!');
+      console.error("Error adding question:", error.message);
+      setMessage("Eroare la adăugarea întrebării!");
     }
   };
 
@@ -64,34 +64,37 @@ const AdminQuestions = () => {
   const handleUpdateQuestion = async () => {
     try {
       const { error } = await supabase
-        .from('questions')
+        .from("questions")
         .update({ category, question_text: questionText })
-        .eq('id', editingQuestionId);
+        .eq("id", editingQuestionId);
 
       if (error) throw error;
 
-      setMessage('Întrebarea a fost actualizată cu succes!');
+      setMessage("Întrebarea a fost actualizată cu succes!");
       setEditingQuestionId(null);
-      setCategory('');
-      setQuestionText('');
+      setCategory("");
+      setQuestionText("");
       fetchQuestions();
     } catch (error) {
-      console.error('Error updating question:', error.message);
-      setMessage('Eroare la actualizarea întrebării!');
+      console.error("Error updating question:", error.message);
+      setMessage("Eroare la actualizarea întrebării!");
     }
   };
 
   const handleDeleteQuestion = async (questionId) => {
-    if (window.confirm('Sigur doriți să ștergeți această întrebare?')) {
+    if (window.confirm("Sigur doriți să ștergeți această întrebare?")) {
       try {
-        const { error } = await supabase.from('questions').delete().eq('id', questionId);
+        const { error } = await supabase
+          .from("questions")
+          .delete()
+          .eq("id", questionId);
         if (error) throw error;
 
-        setMessage('Întrebarea a fost ștearsă cu succes!');
+        setMessage("Întrebarea a fost ștearsă cu succes!");
         setQuestions((prev) => prev.filter((q) => q.id !== questionId));
       } catch (error) {
-        console.error('Error deleting question:', error.message);
-        setMessage('Eroare la ștergerea întrebării!');
+        console.error("Error deleting question:", error.message);
+        setMessage("Eroare la ștergerea întrebării!");
       }
     }
   };
@@ -100,12 +103,21 @@ const AdminQuestions = () => {
     <div>
       <Meniusus />
       <div className={styles.adminContainer}>
-        <div className={styles.sidebar}>
+      <div className={styles.sidebar}>
           <ul>
-            <li>Chestionare</li>
-            <li>Întrebări</li>
-            <li>Răspunsuri</li>
-            <li>Contact</li>
+            <li>
+            <Link to="/AdminQuizzes" className={styles.link}>Chestionare</Link>
+            </li>
+            <li>
+            <Link to="/AdminQuestions" className={styles.link}>Întrebări</Link>
+            </li>
+            <li>
+            <Link to="/AdminAnswers" className={styles.link}>Răspunsuri</Link>
+            </li>
+            <li>
+            <Link to="/AdminContact" className={styles.link}>Contact</Link>
+
+            </li>
           </ul>
         </div>
         <div className={styles.content}>
@@ -123,7 +135,9 @@ const AdminQuestions = () => {
               onChange={(e) => setQuestionText(e.target.value)}
             />
             {editingQuestionId ? (
-              <button onClick={handleUpdateQuestion}>Actualizează Întrebarea</button>
+              <button onClick={handleUpdateQuestion}>
+                Actualizează Întrebarea
+              </button>
             ) : (
               <button onClick={handleAddQuestion}>Adaugă Întrebare</button>
             )}
@@ -140,8 +154,12 @@ const AdminQuestions = () => {
                   <strong>Întrebare:</strong> {question.question_text}
                 </p>
                 <div className={styles.actions}>
-                  <button onClick={() => handleEditToggle(question.id)}>Editează</button>
-                  <button onClick={() => handleDeleteQuestion(question.id)}>Șterge</button>
+                  <button onClick={() => handleEditToggle(question.id)}>
+                    Editează
+                  </button>
+                  <button onClick={() => handleDeleteQuestion(question.id)}>
+                    Șterge
+                  </button>
                 </div>
               </div>
             ))}

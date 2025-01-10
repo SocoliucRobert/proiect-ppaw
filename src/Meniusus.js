@@ -68,26 +68,28 @@ const Meniusus = () => {
           <span className={styles.brand}>CHESTIONARE AUTO</span>
         </div>
         <div className={`${styles.loginButton} ${fadeClass}`}>
-          {isLoading ? (
-            <span>Se incarca sesiunea</span>
-          ) : isLoggedIn ? (
-            <div className={styles.loggedInUser}>
-              <span className={styles.loggedInText}  style={{ cursor: 'pointer' }}>
-                Utilizator: {username}
-              </span>
-              <button
-                type="button"
-                onClick={handleLogout}
-                className={`${styles.buttonStyle} ${styles.animateButton}`}
-              >
-                <span className={styles.buttonText}>IEȘIRE</span>
-              </button>
-            </div>
-          ) : (
-            <Link to="/Login" className={`${styles.buttonStyle} ${styles.animateButton}`}>
-              <span className={styles.buttonText}>CONECTARE</span>
-            </Link>
-          )}
+        {isLoggedIn ? (
+  <div className={styles.loggedInUser}>
+    <span 
+      className={styles.loggedInText} 
+      style={{ cursor: 'pointer' }} 
+      onClick={() => navigate('/AdminQuizzes')} 
+    >
+      Utilizator: {username}
+    </span>
+    <button
+      type="button"
+      onClick={handleLogout}
+      className={`${styles.buttonStyle} ${styles.animateButton}`}
+    >
+      <span className={styles.buttonText}>IEȘIRE</span>
+    </button>
+  </div>
+) : (
+  <Link to="/Login" className={`${styles.buttonStyle} ${styles.animateButton}`}>
+    <span className={styles.buttonText}>CONECTARE</span>
+  </Link>
+)}
         </div>
       </div>
       <div className={styles.header}>
