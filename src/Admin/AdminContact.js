@@ -1,8 +1,12 @@
-import React, { useEffect, useState } from "react"; 
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./AdmindContact.module.css";
 import Meniusus from "../Meniusus";
 import supabase from "../supabaseClient";
+
+// Sistem de cache
+const cache = {};
+const CACHE_KEY = "contacts";
 
 const AdminContact = () => {
   const [contacts, setContacts] = useState([]);
@@ -26,9 +30,11 @@ const AdminContact = () => {
         const email = session.user?.email || "";
 
         if (email !== "rob_roby_rob@yahoo.com") {
+          console.log("Utilizator neautorizat, redirect la Acasă.");
           navigate("/Acasa");
         }
       } else {
+        console.log("Sesiune inexistentă, redirect la Acasă.");
         navigate("/Acasa");
       }
     } catch (error) {
@@ -41,16 +47,32 @@ const AdminContact = () => {
   }, []);
 
   const fetchContacts = async () => {
+    if (cache[CACHE_KEY]) {
+      console.log("📦 Utilizăm datele din cache:", cache[CACHE_KEY]);
+      setContacts(cache[CACHE_KEY]);
+      return;
+    }
+
     try {
+      console.log("🔄 Încărcăm datele din baza de date...");
       const { data, error } = await supabase
         .from("contact")
         .select("*")
-        .is("deletestate", null); // Only fetch rows where deletestate is null
+        .is("deletestate", null); // Fetch rows unde deletestate este null
+
       if (error) throw error;
+
+      cache[CACHE_KEY] = data; // Salvăm datele în cache
+      console.log("✅ Datele au fost salvate în cache:", data);
       setContacts(data);
     } catch (error) {
-      console.error("Error fetching contacts:", error.message);
+      console.error("❌ Eroare la încărcarea contactelor:", error.message);
     }
+  };
+
+  const resetCache = () => {
+    console.log("🗑️ Resetăm cache-ul...");
+    delete cache[CACHE_KEY];
   };
 
   const handleDeleteContact = async (contactId) => {
@@ -58,17 +80,17 @@ const AdminContact = () => {
       try {
         const { error } = await supabase
           .from("contact")
-          .update({ deletestate: true }) // Set deletestate to true
+          .update({ deletestate: true }) // Setăm deletestate la true
           .eq("id", contactId);
 
         if (error) throw error;
 
+        console.log(`✂️ Mesajul cu ID-ul ${contactId} a fost șters logic.`);
         setMessage("Mesajul a fost șters cu succes!");
-        setContacts((prev) =>
-          prev.filter((contact) => contact.id !== contactId)
-        );
+        resetCache(); // Resetăm cache-ul
+        fetchContacts(); // Reîncărcăm datele
       } catch (error) {
-        console.error("Error deleting contact:", error.message);
+        console.error("❌ Eroare la ștergerea mesajului:", error.message);
         setMessage("Eroare la ștergerea mesajului!");
       }
     }
@@ -111,8 +133,7 @@ const AdminContact = () => {
               contacts.map((contact) => (
                 <div key={contact.id} className={styles.contactItem}>
                   <p>
-                    <strong>Nume:</strong> {contact.first_name}{" "}
-                    {contact.last_name}
+                    <strong>Nume:</strong> {contact.first_name} {contact.last_name}
                   </p>
                   <p>
                     <strong>Email:</strong> {contact.email}

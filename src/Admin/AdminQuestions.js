@@ -63,7 +63,7 @@ const AdminQuestions = () => {
       const { data, error } = await supabase
         .from("questions")
         .insert([{ category, question_text: questionText }])
-        .select(); // Ensure the newly inserted row is returned.
+        .select(); 
 
       if (error) throw error;
 
