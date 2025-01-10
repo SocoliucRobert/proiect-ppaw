@@ -73,7 +73,11 @@ const Meniusus = () => {
     <span 
       className={styles.loggedInText} 
       style={{ cursor: 'pointer' }} 
-      onClick={() => navigate('/AdminQuizzes')} 
+      onClick={() => {
+        if (username === 'rob_roby_rob@yahoo.com') {
+          navigate('/AdminQuizzes'); 
+        }
+      }}
     >
       Utilizator: {username}
     </span>
@@ -90,6 +94,7 @@ const Meniusus = () => {
     <span className={styles.buttonText}>CONECTARE</span>
   </Link>
 )}
+
         </div>
       </div>
       <div className={styles.header}>

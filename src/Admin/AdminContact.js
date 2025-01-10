@@ -1,11 +1,40 @@
 import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./AdmindContact.module.css";
 import Meniusus from "../Meniusus";
 import supabase from "../supabaseClient";
-import { Link } from "react-router-dom";
+
 const AdminContact = () => {
   const [contacts, setContacts] = useState([]);
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    checkAuthentication();
+  }, []);
+
+  const checkAuthentication = async () => {
+    try {
+      const {
+        data: { session },
+        error,
+      } = await supabase.auth.getSession();
+
+      if (error) throw error;
+
+      if (session) {
+        const email = session.user?.email || "";
+
+        if (email !== "rob_roby_rob@yahoo.com") {
+          navigate("/Acasa");
+        }
+      } else {
+        navigate("/Acasa");
+      }
+    } catch (error) {
+      console.error("Error fetching session:", error.message);
+    }
+  };
 
   useEffect(() => {
     fetchContacts();
@@ -45,20 +74,27 @@ const AdminContact = () => {
     <div>
       <Meniusus />
       <div className={styles.adminContainer}>
-      <div className={styles.sidebar}>
+        <div className={styles.sidebar}>
           <ul>
             <li>
-            <Link to="/AdminQuizzes" className={styles.link}>Chestionare</Link>
+              <Link to="/AdminQuizzes" className={styles.link}>
+                Chestionare
+              </Link>
             </li>
             <li>
-            <Link to="/AdminQuestions" className={styles.link}>Întrebări</Link>
+              <Link to="/AdminQuestions" className={styles.link}>
+                Întrebări
+              </Link>
             </li>
             <li>
-            <Link to="/AdminAnswers" className={styles.link}>Răspunsuri</Link>
+              <Link to="/AdminAnswers" className={styles.link}>
+                Răspunsuri
+              </Link>
             </li>
             <li>
-            <Link to="/AdminContact" className={styles.link}>Contact</Link>
-
+              <Link to="/AdminContact" className={styles.link}>
+                Contact
+              </Link>
             </li>
           </ul>
         </div>
