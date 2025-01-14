@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./AdmindContact.module.css";
-import Meniusus from "../Meniusus";
-import supabase from "../supabaseClient";
+import Meniusus from "../PaginiPrincipale/Meniusus";
+import supabase from "../Servicii/supabaseClient";
 
 // Sistem de cache
 const cache = {};
@@ -58,11 +58,11 @@ const AdminContact = () => {
       const { data, error } = await supabase
         .from("contact")
         .select("*")
-        .is("deletestate", null); // Fetch rows unde deletestate este null
+        .is("deletestate", null); 
 
       if (error) throw error;
 
-      cache[CACHE_KEY] = data; // Salvăm datele în cache
+      cache[CACHE_KEY] = data; 
       console.log("✅ Datele au fost salvate în cache:", data);
       setContacts(data);
     } catch (error) {
@@ -80,15 +80,15 @@ const AdminContact = () => {
       try {
         const { error } = await supabase
           .from("contact")
-          .update({ deletestate: true }) // Setăm deletestate la true
+          .update({ deletestate: true }) 
           .eq("id", contactId);
 
         if (error) throw error;
 
         console.log(`✂️ Mesajul cu ID-ul ${contactId} a fost șters logic.`);
         setMessage("Mesajul a fost șters cu succes!");
-        resetCache(); // Resetăm cache-ul
-        fetchContacts(); // Reîncărcăm datele
+        resetCache(); // Resetare cache
+        fetchContacts(); // Reincarcare cache
       } catch (error) {
         console.error("❌ Eroare la ștergerea mesajului:", error.message);
         setMessage("Eroare la ștergerea mesajului!");

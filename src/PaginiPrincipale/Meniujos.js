@@ -1,7 +1,7 @@
 import React from 'react';
-import styles from './stilizare/meniujos.module.css'; 
-import facebook from './poze/facebook.png';  
-import instagram from './poze/instagram.png';
+import styles from '../stilizare/meniujos.module.css'; 
+import facebook from '../poze/facebook.png';  
+import instagram from '../poze/instagram.png';
 import { motion } from 'framer-motion'; 
 
 const Meniujos = () => {

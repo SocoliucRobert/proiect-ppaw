@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./AdmindAnswers.module.css";
-import Meniusus from "../Meniusus";
-import supabase from "../supabaseClient";
+import Meniusus from "../PaginiPrincipale/Meniusus";
+import supabase from "../Servicii/supabaseClient";
 import { Link } from "react-router-dom";
 
 const AdminAnswers = () => {

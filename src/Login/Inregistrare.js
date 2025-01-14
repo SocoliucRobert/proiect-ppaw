@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import styles from './stilizare/inregistrare.module.css';
-import Meniusus from './Meniusus';
-import Meniujos from './Meniujos';
-import supabase from './supabaseClient';
+import styles from '../stilizare/inregistrare.module.css';
+import Meniusus from '../PaginiPrincipale/Meniusus';
+import Meniujos from '../PaginiPrincipale/Meniujos';
+import supabase from '../Servicii/supabaseClient';
 
 const Inregistrare = () => {
   const navigate = useNavigate();

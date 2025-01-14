@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./AdmindQuestions.module.css";
-import Meniusus from "../Meniusus";
-import supabase from "../supabaseClient";
+import Meniusus from "../PaginiPrincipale/Meniusus";
+import supabase from "../Servicii/supabaseClient";
 
 const AdminQuestions = () => {
   const [category, setCategory] = useState("");

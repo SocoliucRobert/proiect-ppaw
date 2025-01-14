@@ -6,8 +6,8 @@ class UserAccessor {
   async fetchUsers() {
     return await prisma.user.findMany({
       include: {
-        questions: true, // Assuming a user can have many questions
-        answers: true,   // Assuming a user can have many answers
+        questions: true,
+        answers: true,   
       },
     });
   }
@@ -32,8 +32,8 @@ class QuestionAccessor {
   async fetchQuestions() {
     return await prisma.question.findMany({
       include: {
-        user: true, // Assuming each question belongs to a user
-        answers: true, // Assuming each question can have many answers
+        user: true, 
+        answers: true, 
       },
     });
   }
@@ -58,8 +58,8 @@ class AnswerAccessor {
   async fetchAnswers() {
     return await prisma.answer.findMany({
       include: {
-        user: true, // Assuming each answer belongs to a user
-        question: true, // Assuming each answer belongs to a question
+        user: true, 
+        question: true, 
       },
     });
   }
@@ -84,7 +84,7 @@ class QuizAccessor {
   async fetchQuizzes() {
     return await prisma.quiz.findMany({
       include: {
-        questions: true, // Assuming a quiz has many questions
+        questions: true, 
       },
     });
   }
@@ -109,8 +109,8 @@ class QuizResultAccessor {
   async fetchQuizResults() {
     return await prisma.quizResult.findMany({
       include: {
-        quiz: true, // Assuming each quiz result belongs to a quiz
-        user: true, // Assuming each quiz result belongs to a user
+        quiz: true, 
+        user: true, 
       },
     });
   }
@@ -135,7 +135,7 @@ class SubscriptionAccessor {
   async fetchSubscriptions() {
     return await prisma.subscription.findMany({
       include: {
-        user: true, // Assuming each subscription belongs to a user
+        user: true, 
       },
     });
   }
@@ -160,7 +160,7 @@ class ContactAccessor {
   async fetchContacts() {
     return await prisma.contact.findMany({
       include: {
-        user: true, // Assuming each contact is associated with a user
+        user: true, 
       },
     });
   }

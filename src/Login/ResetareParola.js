@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import styles from "./stilizare/resetareparola.module.css";
-import Meniusus from "./Meniusus";
-import Meniujos from "./Meniujos";
-import supabase from './supabaseClient'; 
+import styles from "../stilizare/resetareparola.module.css";
+import Meniusus from "../PaginiPrincipale/Meniusus";
+import Meniujos from "../PaginiPrincipale/Meniujos";
+import supabase from '../Servicii/supabaseClient'; 
 
 const ResetareParola = () => {
   const [email, setEmail] = useState('');

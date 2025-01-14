@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import supabase from './supabaseClient';
-import styles from './stilizare/contact.module.css';
-import Meniusus from './Meniusus';
-import Meniujos from './Meniujos';
+import supabase from '../Servicii/supabaseClient';
+import styles from '../stilizare/contact.module.css';
+import Meniusus from '../PaginiPrincipale/Meniusus';
+import Meniujos from '../PaginiPrincipale/Meniujos';
 const Contact = () => {
   const [formData, setFormData] = useState({
     first_name: '',

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./AdminQuizzes.module.css";
-import Meniusus from "../Meniusus";
-import supabase from "../supabaseClient";
+import Meniusus from "../PaginiPrincipale/Meniusus";
+import supabase from "../Servicii/supabaseClient";
 
 const AdminQuizzes = () => {
   const [subscriptionPlan, setSubscriptionPlan] = useState("");

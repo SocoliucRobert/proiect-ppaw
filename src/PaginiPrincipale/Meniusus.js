@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import styles from './stilizare/meniusus.module.css';
-import baraImage from './poze/bara.png';
-import imagelogo from './poze/imagineLogo.png';
+import styles from '../stilizare/meniusus.module.css';
+import baraImage from '../poze/bara.png';
+import imagelogo from '../poze/imagineLogo.png';
 import { motion } from 'framer-motion';
-import supabase from './supabaseClient';
+import supabase from '../Servicii/supabaseClient';
 
 const Meniusus = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);

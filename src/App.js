@@ -1,14 +1,14 @@
 import { BrowserRouter as Router, Route,Routes } from 'react-router-dom';
-import Acasa from './Acasa';
+import Acasa from './PaginiPrincipale/Acasa.js';
 
-import Contact from './Contact';
-import Login from './Login';
-import Inregistrare from './Inregistrare';
-import ResetareParola from './ResetareParola';
-import Updateparola from './Updateparola';
+import Contact from './Business/Contact.js';
+import Login from './Login/Login.js';
+import Inregistrare from './Login/Inregistrare.js';
+import ResetareParola from './Login/ResetareParola.js';
+import Updateparola from './Login/Updateparola.js';
 
-import Chestionare from './Chestionare';
-import Abonamente from './Abonamente';
+import Chestionare from './PaginiPrincipale/Chestionare.js';
+import Abonamente from './PaginiPrincipale/Abonamente.js';
 import QuizPage from './Business/QuizPage';
 import AvailableQuizzes from './Business/AvailableQuizzes';
 import AdminQuestions from './Admin/AdminQuestions';

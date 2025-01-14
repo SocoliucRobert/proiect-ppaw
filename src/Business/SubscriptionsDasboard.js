@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import supabase from '../supabaseClient';
+import supabase from '../Servicii/supabaseClient';
 import styles from './SubscriptionsDasboard.module.css';
 
 const SubscriptionsDashboard = () => {

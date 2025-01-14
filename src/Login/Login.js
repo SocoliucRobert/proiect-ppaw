@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import styles from "./stilizare/login.module.css";
-import Meniusus from "./Meniusus";
-import Meniujos from "./Meniujos";
-import googleIcon from "./poze/googlelogin.png";
-import supabase from "./supabaseClient";
-import facebookIcon from './poze/facebooklogin.png'
+import styles from "../stilizare/login.module.css";
+import Meniusus from "../PaginiPrincipale/Meniusus";
+import Meniujos from "../PaginiPrincipale/Meniujos";
+
+import supabase from "../Servicii/supabaseClient";
+
 
 const Login = () => {
   const navigate = useNavigate();
