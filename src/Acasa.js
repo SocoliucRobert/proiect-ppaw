@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./stilizare/acasa.module.css";
 import Meniusus from "./Meniusus";
-import QuizzesDashboard from "./QuizzesDashboard";
+import QuizzesDashboard from "./Business/QuizzesDashboard";
 
 
 

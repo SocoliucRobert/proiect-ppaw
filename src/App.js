@@ -9,8 +9,8 @@ import Updateparola from './Updateparola';
 
 import Chestionare from './Chestionare';
 import Abonamente from './Abonamente';
-import QuizPage from './QuizPage';
-import AvailableQuizzes from './AvailableQuizzes';
+import QuizPage from './Business/QuizPage';
+import AvailableQuizzes from './Business/AvailableQuizzes';
 import AdminQuestions from './Admin/AdminQuestions';
 import AdminQuizzes from './Admin/AdminQuizzes';
 import AdminAnswers from './Admin/AdminAnswers';
